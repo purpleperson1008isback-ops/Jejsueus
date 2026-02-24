@@ -2,8 +2,9 @@
 local CorrectKey = "DVRK_2026_FREE" -- Change this to your desired key
 local DiscordLink = "https://discord.gg/Eu5YnfC82q"
 
+-- // THE MAIN SCRIPT WRAPPER
 local function loadMainScript()
-    -- // YOUR ORIGINAL SCRIPT STARTS HERE //
+    -- This is where your actual cheat code lives
     local Player = game:GetService("Players").LocalPlayer
     local PlayerGui = Player:WaitForChild("PlayerGui")
     local UserInputService = game:GetService("UserInputService")
@@ -572,81 +573,80 @@ local function loadMainScript()
         end
     end)
     UserInputService.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end end)
-    -- // YOUR ORIGINAL SCRIPT ENDS HERE //
 end
 
--- // KEY SYSTEM UI //
+-- // KEY SYSTEM CODE (THIS RUNS FIRST)
 local KeyGui = Instance.new("ScreenGui")
-KeyGui.Name = "DVRK_KeySystem"
-KeyGui.Parent = game:GetService("CoreGui") 
+KeyGui.Name = "DVRK_KeySys"
+KeyGui.ResetOnSpawn = false
+-- Using PlayerGui instead of CoreGui to ensure compatibility
+KeyGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 
 local KeyFrame = Instance.new("Frame")
+KeyFrame.Name = "KeyFrame"
 KeyFrame.Size = UDim2.new(0, 400, 0, 250)
 KeyFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
-KeyFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 KeyFrame.BorderSizePixel = 0
 KeyFrame.Parent = KeyGui
-local UICorner = Instance.new("UICorner", KeyFrame)
 
-local Title = Instance.new("TextLabel", KeyFrame)
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(0, 10)
+Corner.Parent = KeyFrame
+
+local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 50)
-Title.Text = "DVRK PRISONBREAK | KEY SYSTEM"
+Title.Text = "DVRK | KEY SYSTEM"
 Title.TextColor3 = Color3.new(1, 1, 1)
 Title.Font = Enum.Font.GothamBold
-Title.TextSize = 18
+Title.TextSize = 20
 Title.BackgroundTransparency = 1
+Title.Parent = KeyFrame
 
-local Desc = Instance.new("TextLabel", KeyFrame)
-Desc.Size = UDim2.new(1, -40, 0, 40)
-Desc.Position = UDim2.new(0, 20, 0, 50)
-Desc.Text = "Join the Discord to get the key:"
-Desc.TextColor3 = Color3.fromRGB(200, 200, 200)
-Desc.Font = Enum.Font.Gotham
-Desc.TextSize = 14
-Desc.BackgroundTransparency = 1
-
-local LinkBox = Instance.new("TextBox", KeyFrame)
-LinkBox.Size = UDim2.new(1, -40, 0, 30)
-LinkBox.Position = UDim2.new(0, 20, 0, 90)
+local LinkBox = Instance.new("TextBox")
+LinkBox.Size = UDim2.new(0.8, 0, 0, 30)
+LinkBox.Position = UDim2.new(0.1, 0, 0.25, 0)
 LinkBox.Text = DiscordLink
+LinkBox.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+LinkBox.TextColor3 = Color3.fromRGB(220, 30, 30)
 LinkBox.ClearTextOnFocus = false
 LinkBox.ReadOnly = true
-LinkBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-LinkBox.TextColor3 = Color3.fromRGB(220, 30, 30)
+LinkBox.Parent = KeyFrame
 Instance.new("UICorner", LinkBox)
 
-local KeyInput = Instance.new("TextBox", KeyFrame)
-KeyInput.Size = UDim2.new(1, -40, 0, 40)
-KeyInput.Position = UDim2.new(0, 20, 0, 140)
-KeyInput.PlaceholderText = "Enter Key Here..."
+local KeyInput = Instance.new("TextBox")
+KeyInput.Size = UDim2.new(0.8, 0, 0, 40)
+KeyInput.Position = UDim2.new(0.1, 0, 0.45, 0)
+KeyInput.PlaceholderText = "Paste Key Here..."
 KeyInput.Text = ""
-KeyInput.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+KeyInput.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
 KeyInput.TextColor3 = Color3.new(1, 1, 1)
+KeyInput.Parent = KeyFrame
 Instance.new("UICorner", KeyInput)
 
-local SubmitBtn = Instance.new("TextButton", KeyFrame)
-SubmitBtn.Size = UDim2.new(1, -40, 0, 40)
-SubmitBtn.Position = UDim2.new(0, 20, 0, 195)
+local SubmitBtn = Instance.new("TextButton")
+SubmitBtn.Size = UDim2.new(0.8, 0, 0, 45)
+SubmitBtn.Position = UDim2.new(0.1, 0, 0.7, 0)
 SubmitBtn.BackgroundColor3 = Color3.fromRGB(220, 30, 30)
 SubmitBtn.Text = "Verify Key"
 SubmitBtn.TextColor3 = Color3.new(1, 1, 1)
 SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.TextSize = 18
+SubmitBtn.Parent = KeyFrame
 Instance.new("UICorner", SubmitBtn)
 
--- // KEY SYSTEM LOGIC //
+-- Button Interaction
 SubmitBtn.MouseButton1Click:Connect(function()
     if KeyInput.Text == CorrectKey then
-        SubmitBtn.Text = "Access Granted!"
+        SubmitBtn.Text = "SUCCESS!"
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
-        task.wait(1)
+        task.wait(0.5)
         KeyGui:Destroy()
-        loadMainScript() 
+        loadMainScript() -- This triggers the cheat UI
     else
         KeyInput.Text = ""
-        KeyInput.PlaceholderText = "INVALID KEY"
-        KeyInput.PlaceholderColor3 = Color3.new(1, 0, 0)
+        KeyInput.PlaceholderText = "WRONG KEY!"
         task.wait(1)
-        KeyInput.PlaceholderText = "Enter Key Here..."
-        KeyInput.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
+        KeyInput.PlaceholderText = "Paste Key Here..."
     end
 end)
